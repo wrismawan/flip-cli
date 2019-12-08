@@ -35,15 +35,9 @@ class DisbursementController extends Controller
 
     private function send($params)
     {
-        echo "Request disbursement on process. Please wait....\n";
-        var_dump(json_encode($params));
-
         $baseURL = App::config('api')['base_url'];
         $secretKey = App::config('api')['secret_key'];
-
         $url = $baseURL . "/disburse";
-
-        $client = curl_init($url);
 
         $requestPayload = json_encode([
             "bank_code" => $params["bank_code"],
@@ -52,21 +46,16 @@ class DisbursementController extends Controller
             "remark" => $params["remark"]
         ]);
 
+        echo "Request disbursement on process. Please wait....\n\n";
+        echo ">>URL: " . $url . "\n";
+        echo ">>Payload: " . $requestPayload . "\n";
+
+        $client = curl_init($url);
         curl_setopt($client, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
         curl_setopt($client, CURLOPT_USERPWD, $secretKey);
         curl_setopt($client, CURLOPT_POSTFIELDS, $requestPayload);
         curl_setopt($client, CURLOPT_POST, 1);
         curl_setopt($client, CURLOPT_RETURNTRANSFER, true);
-
-        /*
-         * "{"id":6793792503,
-         * "amount":99999,"status":"PENDING",
-         * "timestamp":"2019-12-08 20:35:54",
-         * "bank_code":"021","account_number":"111-222-333",
-         * "beneficiary_name":"PT FLIP","remark":"cobain dulu",
-         * "receipt":null,"time_served":"0000-00-00 00:00:00",
-         * "fee":4000}"
-         */
 
         $response = json_decode(curl_exec($client));
 
@@ -84,23 +73,47 @@ class DisbursementController extends Controller
             "time_served" => $response->time_served
         ];
 
+        var_dump(json_encode($responseData));
+
         $disbursementModel = new Disbursement();
         $disbursementModel->save($responseData);
+
+        echo "\n>> SUCCESS Response: ";
         var_dump(json_encode($response));
 
     }
 
     private function show($params)
     {
-        echo "show\n";
-        var_dump(App::config('database'));
-        var_dump($params);
+        $baseURL = App::config('api')['base_url'];
+        $secretKey = App::config('api')['secret_key'];
+        $disburseId = $params["id"];
+        $url = $baseURL . "/disburse/" . $disburseId;
+
+        echo "Showing Disbursement {$disburseId} on process. Please wait....\n";
+        echo ">> URL: " . $url . "\n";
+
+        $client = curl_init($url);
+        curl_setopt($client, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+        curl_setopt($client, CURLOPT_USERPWD, $secretKey);
+        curl_setopt($client, CURLOPT_RETURNTRANSFER, true);
+        $response = json_decode(curl_exec($client));
+
+        $params = [
+            "status" => $response->status,
+            "receipt" => $response->receipt,
+            "time_served" => $response->time_served
+        ];
+
+        $disbursementModel = new Disbursement();
+        $disbursementModel->updateById($disburseId, $params);
+
+        echo "\n>> SUCCESS RESPONSE: " . json_encode($response);
     }
 
     private function showAll($params)
     {
         echo "show all\n";
-        var_dump($params);
     }
 
 
