@@ -10,10 +10,22 @@ class App
 
     protected $commandRegistry;
 
+    protected static $config;
+
     public function __construct()
     {
         $this->printer = new Printer();
         $this->commandRegistry = new CommandRegistry();
+    }
+
+    public static function setConfig($value)
+    {
+        static::$config = $value;
+    }
+
+    public static function config($key)
+    {
+        return static::$config[$key];
     }
 
     public function getPrinter()
