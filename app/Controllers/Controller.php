@@ -15,6 +15,7 @@ abstract class Controller
     public function __construct(App $app, $argv)
     {
         $this->app = $app;
+        $this->argv = $argv;
         $this->params = $this->parseParams($argv);
     }
 

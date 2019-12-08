@@ -10,5 +10,6 @@
 
     $app->registerController('hello', new \App\Controllers\HelloController($app, $argv));
     $app->registerController('help', new \App\Controllers\HelpController($app, $argv));
+    $app->registerController('disbursement', new \App\Controllers\DisbursementController($app, $argv));
 
     $app->runCommand($argv);
