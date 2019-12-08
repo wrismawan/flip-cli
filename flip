@@ -8,7 +8,7 @@
 
     $app = new App();
 
-    $app->registerController('hello', new \App\Controllers\HelloController($app));
-    $app->registerController('help', new \App\Controllers\HelpController($app));
+    $app->registerController('hello', new \App\Controllers\HelloController($app, $argv));
+    $app->registerController('help', new \App\Controllers\HelpController($app, $argv));
 
     $app->runCommand($argv);
