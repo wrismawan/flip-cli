@@ -4,9 +4,11 @@ namespace App\Controllers;
 
 class HelloController extends Controller
 {
-    public function run($argv)
+    public function run()
     {
-        $name = isset($argv[2]) ? $argv[2] : "World";
+        $params = $this->getParams();
+
+        $name = isset($params["name"]) ? $params["name"] : "Muhammad";
         $this->display("Hello {$name}, Welcome to Flip CLI!");
     }
 }

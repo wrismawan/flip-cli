@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 class HelpController extends Controller
 {
-    public function run($argv)
+    public function run()
     {
         $message =
             "Usage: php flip [COMMAND]
