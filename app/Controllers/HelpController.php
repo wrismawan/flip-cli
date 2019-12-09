@@ -13,7 +13,7 @@ class HelpController extends CommandController
             \nCommand list:
             \n1. hello [YOURNAME]
             > Welcome Message for testing purpose
-            > eg: php flip hello 'wahyu rismawan'
+            > eg: php flip hello --name='wahyu rismawan'
             
             \n2. disbursement show [PARAMETERS]
             > Get disbursement data from API by Id, then update the data if any change.
@@ -21,7 +21,11 @@ class HelpController extends CommandController
             \t--id\t : Dirsbursement Id
             > Eg: php flip disbursement show --id=123
             
-            \n3. disbursement send [PARAMETERS]
+            \n3. disbursement all
+            > Get all disbursement data from database
+            > Eg: php flip disbursement all
+            
+            \n4. disbursement send [PARAMETERS]
             > Send request disbursement data.
             > Parameters:
             \t--bank_code\t\t : Bank Code
