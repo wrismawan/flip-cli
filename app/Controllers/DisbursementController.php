@@ -18,6 +18,7 @@ class DisbursementController extends CommandController
     {
         $mode = $this->argv[2];
         $params = $this->params;
+        $this->disbursementModel = new Disbursement();
 
         switch ($mode) {
             case self::SEND_DISBURSEMENT:
@@ -30,86 +31,43 @@ class DisbursementController extends CommandController
                 $this->showAll($params);
                 break;
         }
-
-        $this->display("disbursement");
     }
 
     private function send($params)
     {
-        $baseURL = App::config('api')['base_url'];
-        $secretKey = App::config('api')['secret_key'];
-        $url = $baseURL . "/disburse";
+        $this->display(">> Request send disbursement on process. Please wait....");
 
-        $requestPayload = json_encode([
+        $requestPayload = [
             "bank_code" => $params["bank_code"],
             "account_number" => $params["account_number"],
             "amount" => $params["amount"],
             "remark" => $params["remark"]
-        ]);
-
-        $this->display("\nRequest disbursement on process. Please wait....\n\n");
-        $this->display(">>URL: " . $url . "\n");
-        $this->display(">>Payload: " . $requestPayload . "\n");
-
-        $client = curl_init($url);
-        curl_setopt($client, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
-        curl_setopt($client, CURLOPT_USERPWD, $secretKey);
-        curl_setopt($client, CURLOPT_POSTFIELDS, $requestPayload);
-        curl_setopt($client, CURLOPT_POST, 1);
-        curl_setopt($client, CURLOPT_RETURNTRANSFER, true);
-
-        $response = json_decode(curl_exec($client));
-
-        $responseData = [
-            "id" => $response->id,
-            "amount" => $response->amount,
-            "status" => $response->status,
-            "account_number" => $response->account_number,
-            "bank_code" => $response->bank_code,
-            "beneficiary_name" => $response->beneficiary_name,
-            "receipt" => $response->receipt,
-            "remark" => $response->remark,
-            "fee" => $response->fee,
-            "timestamp" => $response->timestamp,
-            "time_served" => $response->time_served
         ];
 
-        var_dump(json_encode($responseData));
+        $client = App::httpClient();
+        $response = $client->sendRequest('POST', '/disburse', $requestPayload);
+        $this->disbursementModel->make($response);
+        $this->disbursementModel->save();
 
-        $disbursementModel = new Disbursement();
-        $disbursementModel->save($responseData);
-
-        echo "\n>> SUCCESS Response: ";
-        var_dump(json_encode($response));
-
+        $this->display("\n>> Yuhuu... Data has been saved into database. \\(^_^)/ \n");
     }
 
     private function show($params)
     {
-        $baseURL = App::config('api')['base_url'];
-        $secretKey = App::config('api')['secret_key'];
         $disburseId = $params["id"];
-        $url = $baseURL . "/disburse/" . $disburseId;
+        $this->display("\nShowing Disbursement ID = {$disburseId} on process. Please wait....\n");
 
-        echo "\nShowing Disbursement ID = {$disburseId} on process. Please wait....\n";
-        echo ">> URL: " . $url . "\n";
+        $client = App::httpClient();
+        $response = $client->sendRequest("GET", "/disburse/{$disburseId}");
 
-        $client = curl_init($url);
-        curl_setopt($client, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
-        curl_setopt($client, CURLOPT_USERPWD, $secretKey);
-        curl_setopt($client, CURLOPT_RETURNTRANSFER, true);
-        $response = json_decode(curl_exec($client));
-
-        $params = [
+        $disburseDataToUpdate = [
             "status" => $response->status,
             "receipt" => $response->receipt,
             "time_served" => $response->time_served
         ];
 
-        $disbursementModel = new Disbursement();
-        $disbursementModel->updateById($disburseId, $params);
-
-        echo "\n>> SUCCESS RESPONSE: " . json_encode($response);
+        $this->disbursementModel->updateById($disburseId, $disburseDataToUpdate);
+        $this->display("\n>> Yuhuu... Data has been updated. \\(^_^)/ \n");
     }
 
     private function showAll($params)
