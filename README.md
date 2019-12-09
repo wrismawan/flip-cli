@@ -51,4 +51,3 @@ Contoh Penggunaan: `php flip disbursement show --id=123456`
 Menampilkan seluruh data `disbursement` yang ada di local database.
 
 Contoh Penggunaan: `php flip disbursement all`
-
