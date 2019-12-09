@@ -9,7 +9,9 @@
     $app = new App();
 
     $app->setConfig(require 'config.php');
+
     $app->setDBConnection(new \FlipCLI\Database\Connection(App::config('database')));
+    $app->setHttpClient(new \FlipCLI\Network\HttpClient(App::config('api')));
 
     $app->registerController('hello', new \App\Controllers\HelloController($app, $argv));
     $app->registerController('help', new \App\Controllers\HelpController($app, $argv));

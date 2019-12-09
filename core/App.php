@@ -5,6 +5,7 @@ namespace FlipCLI;
 use FlipCLI\Command\CommandController;
 use FlipCLI\Command\CommandRegistry;
 use FlipCLI\Database\Connection;
+use FlipCLI\Network\HttpClient;
 
 class App
 {
@@ -16,7 +17,7 @@ class App
 
     protected static $database;
 
-    protected static $httpNetwork;
+    protected static $httpClient;
 
     public function __construct()
     {
@@ -44,14 +45,14 @@ class App
         return static::$database;
     }
 
-    public function setHttpNetwork($value)
+    public function setHttpClient(HttpClient $client)
     {
-        static::$httpNetwork = $value;
+        static::$httpClient = $client;
     }
 
-    public static function httpNetwork()
+    public static function httpClient()
     {
-        return static::$httpNetwork;
+        return static::$httpClient;
     }
 
     public function getPrinter()
