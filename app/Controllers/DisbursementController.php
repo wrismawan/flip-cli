@@ -54,32 +54,36 @@ class DisbursementController extends CommandController
 
     private function show($params)
     {
-        $disburseId = $params["id"];
-        $this->display("\nShowing Disbursement ID = {$disburseId} on process. Please wait....\n");
+        $disbursementId = $params["id"];
+        $this->display("\nShowing Disbursement ID = {$disbursementId} on process. Please wait....\n");
 
         $client = App::httpClient();
-        $response = $client->sendRequest("GET", "/disburse/{$disburseId}");
-
+        $response = $client->sendRequest("GET", "/disburse/{$disbursementId}");
         $disburseDataToUpdate = [
             "status" => $response->status,
             "receipt" => $response->receipt,
             "time_served" => $response->time_served
         ];
 
-        $this->disbursementModel->updateById($disburseId, $disburseDataToUpdate);
+        $this->disbursementModel->updateById($disbursementId, $disburseDataToUpdate);
 
-        $disburse = $this->disbursementModel->getById($disburseId);
-
-        if ($disburse) {
-            $this->disbursementModel->display($disburse);
+        $disbursement = $this->disbursementModel->getById($disbursementId);
+        if ($disbursement) {
+            $this->disbursementModel->display($disbursement);
             $this->display("\n\n>> Yuhuu... Data has been updated. \\(^_^)/ \n");
         } else {
-            $this->display("\n>> Disburse ID {$disburseId} is not found.");
+            $this->display("\n>> Disburse ID {$disbursementId} is not found.");
         }
     }
 
     private function showAll($params)
     {
-        echo "show all\n";
+        $this->display(">> Get all disbursement data. Please wait....");
+
+        $disbursements = $this->disbursementModel->getAll();
+        foreach ($disbursements as $disbursement) {
+            $this->disbursementModel->display($disbursement);
+            $this->display("\n\n---------------------------------");
+        }
     }
 }

@@ -18,13 +18,32 @@ class Model
 
     public function getById($id)
     {
-        $sql = "select * from {$this->table} where id = :id";
+        try {
+            $sql = "select * from {$this->table} where id = :id";
+            $statement = $this->connection->prepare($sql);
+            $statement->execute(["id" => $id]);
 
-        $statement = $this->connection->prepare($sql);
-        $statement->execute(["id" => $id]);
-        $sqlResult = $statement->fetchAll(PDO::FETCH_ASSOC);
+            $sqlResult = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-        return sizeof($sqlResult) > 0 ? $sqlResult[0] : null;
+            return sizeof($sqlResult) > 0 ? $sqlResult[0] : null;
+        } catch (\Exception $e) {
+            echo "ERROR: " . $e->getMessage() . "\n";
+        }
+    }
+
+    public function getAll()
+    {
+        try {
+            $sql = "select * from {$this->table}";
+            $statement = $this->connection->prepare($sql);
+            $statement->execute();
+
+            $sqlResult = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+            return sizeof($sqlResult) > 0 ? $sqlResult : null;
+        } catch (\Exception $e) {
+            echo "ERROR: " . $e->getMessage() . "\n";
+        }
     }
 
     public function save($params)
