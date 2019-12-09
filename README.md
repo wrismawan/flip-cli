@@ -1,12 +1,13 @@
 # Flip-CLI
 
->**Flip-CLI** adalah PHP-CLI microframework yang dibuat untuk menyelesaikan technical test Backend Developer Flip.id.   
+>**Flip-CLI** adalah PHP-CLI microframework yang dibuat menggunakan Vanilla PHP (tanpa external library atau kustomisasi) untuk menyelesaikan technical test Backend Developer Flip.id.
 
 ### Installation
 
-Buat database baru di komputer Anda, misal dengan nama `db_flip_cli`
-
-Sesuaikan credential database Anda pada file `config.php`
+-  Buat database baru di komputer Anda, misal dengan nama `db_flip_cli`
+-  Jalankan perintah `composer dump-autoload` untuk generate autoload file agar comply dengan [PSR-4: Autoloader](https://www.php-fig.org/psr/psr-4/).
+Jika `composer` belum ter-install di komputer Anda, silakan ikuti [panduan berikut](https://getcomposer.org/download/).
+- Sesuaikan credential database Anda pada file `config.php`
 
 ```
 'database' => [
@@ -16,7 +17,7 @@ Sesuaikan credential database Anda pada file `config.php`
     'db_connection' => 'mysql:host=127.0.0.1'
 ]
 ```
-Masuk ke directory project dan jalankan perintah `php flip db_migrate` untuk generate tabel `disbursements`
+- Masuk ke directory project dan jalankan perintah `php flip db_migrate` untuk generate tabel `disbursements`
 
 ### Usage 
 
