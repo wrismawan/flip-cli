@@ -3,6 +3,7 @@
 namespace FlipCLI\Database;
 
 use FlipCLI\App;
+use PDO;
 
 class Model
 {
@@ -13,6 +14,17 @@ class Model
     function __construct()
     {
         $this->connection = App::dbConnection();
+    }
+
+    public function getById($id)
+    {
+        $sql = "select * from {$this->table} where id = :id";
+
+        $statement = $this->connection->prepare($sql);
+        $statement->execute(["id" => $id]);
+        $sqlResult = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        return sizeof($sqlResult) > 0 ? $sqlResult[0] : null;
     }
 
     public function save($params)

@@ -31,4 +31,17 @@ class Disbursement extends Model
     {
         parent::save($this->data);
     }
+
+    public function display($data)
+    {
+        echo "\nId\t\t\t: {$data["id"]}";
+        echo "\nAmount\t\t\t: {$data["amount"]}";
+        echo "\nStatus\t\t\t: {$data["status"]}";
+        echo "\nBank Code\t\t: {$data["bank_code"]}";
+        echo "\nAccount Number\t\t: {$data["account_number"]}";
+        echo "\nBeneficiary Name\t: {$data["beneficiary_name"]}";
+        echo "\nRemark\t\t\t: {$data["remark"]}";
+        echo "\nReceipt\t\t\t: {$data["receipt"]}";
+        echo "\nFee\t\t\t: {$data["fee"]}";
+    }
 }

@@ -67,13 +67,19 @@ class DisbursementController extends CommandController
         ];
 
         $this->disbursementModel->updateById($disburseId, $disburseDataToUpdate);
-        $this->display("\n>> Yuhuu... Data has been updated. \\(^_^)/ \n");
+
+        $disburse = $this->disbursementModel->getById($disburseId);
+
+        if ($disburse) {
+            $this->disbursementModel->display($disburse);
+            $this->display("\n\n>> Yuhuu... Data has been updated. \\(^_^)/ \n");
+        } else {
+            $this->display("\n>> Disburse ID {$disburseId} is not found.");
+        }
     }
 
     private function showAll($params)
     {
         echo "show all\n";
     }
-
-
 }
