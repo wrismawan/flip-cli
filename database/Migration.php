@@ -27,6 +27,6 @@ class Migration extends CommandController
         $connection = App::dbConnection();
         $connection->exec($sql);
 
-        $this->display("Flip CLI Migration");
+        $this->display("> disbursement table has been created.");
     }
 }
