@@ -1,8 +1,6 @@
 <?php
 
-namespace FlipCLI;
-
-use App\Controllers\Controller;
+namespace FlipCLI\Command;
 
 class CommandRegistry
 {
@@ -10,7 +8,7 @@ class CommandRegistry
 
     protected $controllers = [];
 
-    public function registerController($commandName, Controller $controller)
+    public function registerController($commandName, CommandController $controller)
     {
         $this->controllers[$commandName] = $controller;
     }
@@ -42,7 +40,7 @@ class CommandRegistry
     {
         $controller = $this->getController($commandName);
 
-        if ($controller instanceof  Controller) {
+        if ($controller instanceof  CommandController) {
             return [ $controller, 'run'];
         }
 

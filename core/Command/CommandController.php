@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Controllers;
+namespace FlipCLI\Command;
 
 use FlipCLI\App;
 
-abstract class Controller
+abstract class CommandController
 {
     protected $app;
 

@@ -6,12 +6,14 @@
         exit;
     }
 
-    App::setConfig(require 'config.php');
-
     $app = new App();
+
+    $app->setConfig(require 'config.php');
+    $app->setDBConnection(new \FlipCLI\Database\Connection(App::config('database')));
+
     $app->registerController('hello', new \App\Controllers\HelloController($app, $argv));
     $app->registerController('help', new \App\Controllers\HelpController($app, $argv));
     $app->registerController('disbursement', new \App\Controllers\DisbursementController($app, $argv));
-    $app->registerController('db_migrate', new \Database\DBMigration($app, $argv));
+    $app->registerController('db_migrate', new \Database\Migration($app, $argv));
 
     $app->runCommand($argv);

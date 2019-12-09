@@ -1,10 +1,8 @@
 <?php
 
-namespace App\Models;
+namespace FlipCLI\Database;
 
-use Database\DBConnection;
 use FlipCLI\App;
-use PDO;
 
 class Model
 {
@@ -14,14 +12,12 @@ class Model
 
     function __construct()
     {
-        $this->connection = DBConnection::make(
-            App::config('database')
-        );
+        $this->connection = App::dbConnection();
     }
 
     public function save($params)
     {
-
+        # make sql format: insert into table_name (columns) values (:columns)
         $sql = sprintf(
             'insert into %s (%s) values (%s)',
             $this->table,
@@ -46,14 +42,13 @@ class Model
             array_keys($params)
         ));
 
+        # make sql format: update table_name set column_name=:column_name where id={id}
         $sql = sprintf(
             'update %s set %s where id = %s',
             $this->table,
             $paramUpdateFormat,
             $id
         );
-
-        echo "\nUPDATE SQL: " . $sql . "\n";
 
         try {
             $statement = $this->connection->prepare($sql);

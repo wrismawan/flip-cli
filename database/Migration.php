@@ -2,10 +2,10 @@
 
 namespace Database;
 
-use App\Controllers\Controller;
 use FlipCLI\App;
+use FlipCLI\Command\CommandController;
 
-class DBMigration extends Controller
+class Migration extends CommandController
 {
     public function run()
     {
@@ -24,7 +24,7 @@ class DBMigration extends Controller
                     PRIMARY KEY (`id`)
                 ) ENGINE = InnoDB;";
 
-        $connection = DBConnection::make(App::config('database'));
+        $connection = App::dbConnection();
         $connection->exec($sql);
 
         $this->display("Flip CLI Migration");

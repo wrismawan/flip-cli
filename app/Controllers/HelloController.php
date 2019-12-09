@@ -2,7 +2,9 @@
 
 namespace App\Controllers;
 
-class HelloController extends Controller
+use FlipCLI\Command\CommandController;
+
+class HelloController extends CommandController
 {
     public function run()
     {

@@ -2,10 +2,11 @@
 
 namespace App\Controllers;
 
-use App\Models\Disbursement;
 use FlipCLI\App;
+use FlipCLI\Command\CommandController;
+use App\Models\Disbursement;
 
-class DisbursementController extends Controller
+class DisbursementController extends CommandController
 {
     const SHOW_DISBURSEMENT = "show";
     const SHOW_ALL_DISBURSEMENT = "all";
@@ -46,9 +47,9 @@ class DisbursementController extends Controller
             "remark" => $params["remark"]
         ]);
 
-        echo "Request disbursement on process. Please wait....\n\n";
-        echo ">>URL: " . $url . "\n";
-        echo ">>Payload: " . $requestPayload . "\n";
+        $this->display("\nRequest disbursement on process. Please wait....\n\n");
+        $this->display(">>URL: " . $url . "\n");
+        $this->display(">>Payload: " . $requestPayload . "\n");
 
         $client = curl_init($url);
         curl_setopt($client, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
@@ -90,7 +91,7 @@ class DisbursementController extends Controller
         $disburseId = $params["id"];
         $url = $baseURL . "/disburse/" . $disburseId;
 
-        echo "Showing Disbursement {$disburseId} on process. Please wait....\n";
+        echo "\nShowing Disbursement ID = {$disburseId} on process. Please wait....\n";
         echo ">> URL: " . $url . "\n";
 
         $client = curl_init($url);
