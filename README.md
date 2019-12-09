@@ -35,6 +35,8 @@ Contoh Penggunaan
 #### 2. Help Command
 Perintah untuk memunculkan seluruh `command` yang tersedia di dalam **Flip-CLI**
 
+`php flip help`
+
 #### 3. Send Disbursement Command
 Mengirim permintaan data disbursement ke Slightly-Big Flip API dan menyimpannya ke dalam database.
 
